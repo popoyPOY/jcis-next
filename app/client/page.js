@@ -1,28 +1,26 @@
-import Image from "next/image";
-import Statistics from "./Statistics";
-import TableContent from "./TableContent";
-import Link from "next/link";
 
+import Client from "./Client";
+import TableContent from "../TableContent";
 const clients = async() => {
 
-  const response = await fetch('http://127.0.0.1:8090/api/collections/clients/records?perPage=1000', {cache: "no-store"});
-  const data = await response.json();
-  return data.items;
-}
+     const response = await fetch('http://127.0.0.1:8090/api/collections/clients/records', {cache: "no-store"});
+     const data = await response.json();
+     return data.items;
+   }
 
-export default async function Home() {
-  const client = await clients();
-  return (
-    <section>
-      <div>
-        <Statistics/>
-      </div>
 
-      <div className="flex items-center justify-center my-5">
-        <h2>List Of Clients</h2>
-      </div>
+export default async function page() {
 
-      <div className=" overflow-scroll flex items-center  justify-start flex-col">
+     const client = await clients();    
+     return (
+          <div className=" flex justify-center">
+               <div className="mx-10">
+                    <Client/>
+               </div>
+
+          {/* for CLIENT LIST*/}     
+          <div className="flex items-center justify-center flex-col">
+            <h2 className=" py-5">Client List</h2>
             <table>
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -40,14 +38,13 @@ export default async function Home() {
             {
               client.map((cc, key) => {
                 return (
-                  <TableContent key={cc.id} client={cc} number={key} />
+                  <TableContent key={cc.id} client={cc} number={key}  />
                 );
               })
             }
             </tbody>
             </table>
           </div>
-          
-    </section>
-  );
+          </div>
+     );
 }
